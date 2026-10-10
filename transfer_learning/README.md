@@ -1,1 +1,49 @@
-Laporan Studi Komparatif Transfer Learning: ResNet-18 vs. MobileNetV2Tugas RET503 Computer Vision and Deep LearningProyek: Persepsi Robot Humanoid untuk FIRA HuroCup (Kategori Basketball) — Barelang FC, Politeknik Negeri Batam.1. Ikhtisar & Metodologi ProyekTujuan: Membandingkan performa model Convolutional Neural Network (CNN) menggunakan pendekatan Transfer Learning (Fine-Tuning) untuk klasifikasi citra objek permainan bola basket robotik dengan fokus pada 2 kelas target: basket dan bola_basket.Arsitektur yang Diuji: ResNet-18 dan MobileNetV2 (Pretrained ImageNet via torchvision).Dataset & Praproses:Total keseluruhan citra: 97 file dengan kelas yang ditemukan ['basket', 'bola_basket'].Dimensi masukan: Diubah seragam ke $224 \times 224$ piksel, kanal RGB, dengan normalisasi mean/std ImageNet.Augmentasi Train: RandomResizedCrop, HorizontalFlip, ColorJitter.Pembagian Dataset: Disusun menggunakan pemetaan metadata.csv untuk memastikan keteraturan direktori latih dan uji.2. Rangkuman Hasil Eksperimen & Perbandingan ModelA. ResNet-18 (20 Epoch)Konfigurasi Pelatihan: Optimizer Adam, Cosine Annealing LR, dilatih selama 20 epoch menggunakan GPU.Statistik Data: Train: 67 citra | Validation: 14 citra | Test: 16 citra.Hasil Performa:Akurasi Validasi Terbaik: 100,0% (val loss terendah ~0.015).Akurasi Test / Evaluasi Akhir: 100,0% (Precision, Recall, dan F1-Score sempurna di angka 1.00 untuk kelas 0.0 [basket] maupun 1.0 [bola_basket]).Karakteristik Kurva: Konvergensi sangat cepat pada awal epoch, dengan kurva loss yang turun drastis dan stabil mendekati nol.B. MobileNetV2 (10 Epoch)Konfigurasi Pelatihan: Optimizer Adam, Cosine Annealing LR, dilatih selama 10 epoch menggunakan CUDA.Statistik Data: Total data keseluruhan: 97 citra | Data Training: 77 citra | Data Validasi/Test: 20 citra.Hasil Performa:Akurasi Validasi Terbaik: 100,0% (Val Acc: 1.0000).Akurasi Test / Pengujian Akhir: 100,0%.Karakteristik Kurva: Kurva loss (Train Loss & Val Loss) menunjukkan penurunan yang sangat mulus (smooth convergence) dari awal hingga epoch ke-10, membuktikan kestabilan arsitektur Inverted Residuals pada dataset 2 kelas ini.3. Analisis & Pembahasan KomparatifEfektivitas Bobot Pretrained:Baik ResNet-18 maupun MobileNetV2 menunjukkan kecepatan adaptasi yang luar biasa tinggi. Dengan memanfaatkan pretrained weights dari ImageNet, kedua model mampu mencapai akurasi validasi $\ge 90\%$ hanya dalam beberapa epoch awal tanpa mengalami overfitting pada dataset berskala kecil.Kapasitas vs. Efisiensi:ResNet-18 mengandalkan residual connections konvensional yang sangat tangguh dalam menangkap detail spasial yang kompleks dan stabil, menghasilkan performa optimal dengan metrik evaluasi pengujian yang sempurna pada 2 kelas objek (basket dan bola_basket).MobileNetV2 menawarkan keunggulan berupa jumlah parameter yang jauh lebih ringan dan efisiensi komputasi tinggi berkat depthwise separable convolutions. Model ini mampu menyamai tingkat akurasi maksimal (100%) dengan kurva loss yang bahkan lebih teratur selama 10 epoch.Catatan Validasi Lapangan (Generalisasi):Meskipun kedua model mencatatkan skor akurasi pengujian yang sempurna ($100\%$), perlu diwaspadai bahwa seluruh data berasal dari satu sesi rekaman lab yang terkontrol. Pengujian lanjutan di arena pertandingan nyata dengan variasi pencahayaan eksternal tetap diperlukan untuk menguji ketahanan (robustness) model secara komprehensif pada robot humanoid Barelang FC.
+# Laporan Studi Komparatif Transfer Learning: ResNet-18 vs. MobileNetV2
+
+**Tugas RET503 Computer Vision and Deep Learning**  
+**Proyek:** Persepsi Robot Humanoid untuk FIRA HuroCup (Kategori Basketball) — Barelang FC, Politeknik Negeri Batam.
+
+---
+
+## 1. Ikhtisar & Metodologi Proyek
+* **Tujuan:** Membandingkan performa model *Convolutional Neural Network* (CNN) menggunakan pendekatan *Transfer Learning* (*Fine-Tuning*) untuk klasifikasi citra objek permainan bola basket robotik dengan fokus pada **2 kelas target**: `basket` dan `bola_basket`.
+* **Arsitektur yang Diuji:** **ResNet-18** dan **MobileNetV2** (*Pretrained ImageNet* via `torchvision`).
+* **Dataset & Praproses:** 
+  - **Total keseluruhan citra:** 97 file dengan kelas yang ditemukan `['basket', 'bola_basket']`.
+  - **Dimensi masukan:** Diubah seragam ke $224 \times 224$ piksel, kanal RGB, dengan normalisasi *mean/std ImageNet*.
+  - **Augmentasi Train:** `RandomResizedCrop`, `HorizontalFlip`, `ColorJitter`.
+  - **Pembagian Dataset:** Disusun menggunakan pemetaan `metadata.csv` untuk memastikan keteraturan direktori latih dan uji.
+
+---
+
+## 2. Rangkuman Hasil Eksperimen & Perbandingan Model
+
+### A. ResNet-18 (20 Epoch)
+* **Konfigurasi Pelatihan:** Optimizer Adam, *Cosine Annealing LR*, dilatih selama 20 epoch menggunakan GPU.
+* **Statistik Data:** Train: 67 citra | Validation: 14 citra | Test: 16 citra.
+* **Hasil Performa:**
+  - **Akurasi Validasi Terbaik:** **100,0%** (*val loss* terendah ~0.015).
+  - **Akurasi Test / Evaluasi Akhir:** **100,0%** (Precision, Recall, dan F1-Score sempurna di angka **1.00** untuk kelas `0.0` [basket] maupun `1.0` [bola_basket]).
+  - **Karakteristik Kurva:** Konvergensi sangat cepat pada awal epoch, dengan kurva *loss* yang turun drastis dan stabil mendekati nol.
+
+### B. MobileNetV2 (10 Epoch)
+* **Konfigurasi Pelatihan:** Optimizer Adam, *Cosine Annealing LR*, dilatih selama 10 epoch menggunakan CUDA.
+* **Statistik Data:** Total data keseluruhan: 97 citra | Data Training: 77 citra | Data Validasi/Test: 20 citra.
+* **Hasil Performa:**
+  - **Akurasi Validasi Terbaik:** **100,0%** (`Val Acc: 1.0000`).
+  - **Akurasi Test / Pengujian Akhir:** **100,0%**.
+  - **Karakteristik Kurva:** Kurva *loss* (*Train Loss & Val Loss*) menunjukkan penurunan yang sangat mulus (*smooth convergence*) dari awal hingga epoch ke-10, membuktikan kestabilan arsitektur *Inverted Residuals* pada dataset 2 kelas ini.
+
+---
+
+## 3. Analisis & Pembahasan Komparatif
+
+1. **Efektivitas Bobot Pretrained:**  
+   Baik ResNet-18 maupun MobileNetV2 menunjukkan kecepatan adaptasi yang luar biasa tinggi. Dengan memanfaatkan *pretrained weights* dari ImageNet, kedua model mampu mencapai akurasi validasi $\ge 90\%$ hanya dalam beberapa epoch awal tanpa mengalami *overfitting* pada dataset berskala kecil.
+
+2. **Kapasitas vs. Efisiensi:**  
+   * **ResNet-18** mengandalkan *residual connections* konvensional yang sangat tangguh dalam menangkap detail spasial yang kompleks dan stabil, menghasilkan performa optimal dengan metrik evaluasi pengujian yang sempurna pada 2 kelas objek (`basket` dan `bola_basket`).
+   * **MobileNetV2** menawarkan keunggulan berupa jumlah parameter yang jauh lebih ringan dan efisiensi komputasi tinggi berkat *depthwise separable convolutions*. Model ini mampu menyamai tingkat akurasi maksimal (100%) dengan kurva *loss* yang bahkan lebih teratur selama 10 epoch.
+
+3. **Catatan Validasi Lapangan (Generalisasi):**  
+   Meskipun kedua model mencatatkan skor akurasi pengujian yang sempurna ($100\%$), perlu diwaspadai bahwa seluruh data berasal dari satu sesi rekaman lab yang terkontrol. Pengujian lanjutan di arena pertandingan nyata dengan variasi pencahayaan eksternal tetap diperlukan untuk menguji ketahanan (*robustness*) model secara komprehensif pada robot humanoid Barelang FC.
