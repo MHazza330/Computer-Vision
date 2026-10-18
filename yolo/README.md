@@ -187,3 +187,10 @@ yolo/
 | Tahap 4–6 | `hasil_praktik_<NIM>.txt` / `.csv` | root folder `yolo/` |
 | Tahap 4–6 | Analisis dan hasil test | README ini (bagian 5, 7) |
 | Tahap 3 | Hasil E1 dan E3, `results.png` kedua eksperimen | `hasil_praktik/E1_pretrained/`, `hasil_praktik/E3_tuning/` |
+
+### Kurva Precision-Recall E1
+![Kurva Precision-Recall E1](hasil_praktik/E1_pretrained/BoxPR_curve.png)
+
+### Label vs Prediksi (data validasi E1)
+![Label data validasi](hasil_praktik/E1_pretrained/val_batch0_labels.jpg)
+![Prediksi data validasi](hasil_praktik/E1_pretrained/val_batch0_pred.jpg)
